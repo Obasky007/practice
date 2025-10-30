@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-Shirt Dark Mode Reveal</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        body {
+            background: #f8fafc;
+            color: #0f172a;
+            font-family: system-ui, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        body.dark {
+            background: #0f172a;
+            color: white;
+        }
+
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        /* T-shirt overlay */
+        #tshirt {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 220px;
+            height: 220px;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            z-index: 100;
+            pointer-events: none;
+            filter: drop-shadow(0 0 40px rgba(99, 102, 241, 0.6));
+        }
+
+        #tshirt path {
+            transition: fill 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Shop Page</h1>
+    <button id="toggle">🌓 Toggle Mode</button>
+
+    <!-- T-shirt overlay -->
+    <svg id="tshirt" viewBox="0 0 512 512" fill="#0f172a">
+        <path d="M320 32h-128l-64 32-64-32-64 128 96 32v256h256V192l96-32-64-128-64 32z" />
+    </svg>
+
+    <script>
+        const toggle = document.getElementById("toggle");
+        const tshirt = document.getElementById("tshirt");
+        const body = document.body;
+        let darkMode = false;
+
+        toggle.addEventListener("click", () => {
+            // Start the t-shirt animation
+            tshirt.style.transition = "transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 1s ease-in-out";
+            tshirt.style.opacity = 1;
+            tshirt.style.transform = "translate(-50%, -50%) scale(25)";
+
+            // Switch theme mid-animation
+            setTimeout(() => {
+                darkMode = !darkMode;
+                body.classList.toggle("dark", darkMode);
+                // Change t-shirt color opposite to background
+                tshirt.setAttribute("fill", darkMode ? "#f8fafc" : "#0f172a");
+            }, 500);
+
+            // Fade out and reset after animation
+            setTimeout(() => {
+                tshirt.style.opacity = 0;
+                tshirt.style.transform = "translate(-50%, -50%) scale(0)";
+            }, 1200);
+        });
+    </script>
+</body>
+
+</html>
